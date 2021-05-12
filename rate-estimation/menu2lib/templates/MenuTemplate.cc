@@ -232,6 +232,7 @@ PermutationFactory::cache_t PermutationFactory::cache_ = {};
 //
 // generate conditions
 {% for name, cond in menu.getConditionMapPtr().items() %}
+
   {%- set overlap_removal = 0 -%}
   {%- if cond.getType() in (tmEventSetup.MuonMuonCorrelationWithOverlapRemoval,
                            tmEventSetup.MuonEsumCorrelationWithOverlapRemoval,
@@ -246,7 +247,8 @@ PermutationFactory::cache_t PermutationFactory::cache_ = {};
                            tmEventSetup.SingleEgamma, tmEventSetup.DoubleEgamma, tmEventSetup.TripleEgamma, tmEventSetup.QuadEgamma,
                            tmEventSetup.SingleTau, tmEventSetup.DoubleTau, tmEventSetup.TripleTau, tmEventSetup.QuadTau,
                            tmEventSetup.SingleJet, tmEventSetup.DoubleJet, tmEventSetup.TripleJet, tmEventSetup.QuadJet) %}
-    {% include 'ObjectTemplate.cc' %}
+
+{% include 'ObjectTemplate.cc' %}
 
   {% elif cond.getType() in (tmEventSetup.TotalEt, tmEventSetup.TotalHt, tmEventSetup.MissingEt, tmEventSetup.MissingHt,
                              tmEventSetup.TotalEtEM, tmEventSetup.MissingEtHF,
@@ -290,7 +292,8 @@ PermutationFactory::cache_t PermutationFactory::cache_ = {};
       err> unsupported object combination for mT
     {% endif %}
 
-  {% endif -%}
+  {% endif %}
+
 {% endfor %}
 
 

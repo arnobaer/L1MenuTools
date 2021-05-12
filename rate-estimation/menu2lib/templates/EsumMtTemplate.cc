@@ -1,7 +1,4 @@
-{#
- # @author: Takashi MATSUSHITA
- #}
-{% block EsumMtTemplate scoped %}
+{% extends "Condition.cc" %}
 
 {% import 'macros.jinja2' as macros %}
 
@@ -30,15 +27,10 @@
 
 {% set iPi = (0.5*(phiScale.getMaximum() - phiScale.getMinimum())/phiScale.getStep()) | int -%}
 
-
-bool
-{{ cond.getName() }}
-(L1Analysis::L1AnalysisL1UpgradeDataFormat* data)
-{
+{% block ConditionLogic %}
   {% if overlap_removal %}
     {{ macros.getReference(reference, tmEventSetup, nEtaBits) }}
   {% endif %}
-  bool pass = false;
   size_t nobj = 0;
   for (size_t ii = 0; ii < data->{{prefix}}Bx.size(); ii++)
   {
@@ -66,8 +58,4 @@ bool
 
     if (pass) break;
   }
-
-  return pass;
-}
-{% endblock EsumMtTemplate %}
-{# eof #}
+{% endblock ConditionLogic %}

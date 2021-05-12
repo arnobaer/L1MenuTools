@@ -1,7 +1,5 @@
-{#
- # @author: Takashi MATSUSHITA
- #}
-{% block ObjectTemplate scoped %}
+{% extends "Condition.cc" %}
+
 {% import 'macros.jinja2' as macros %}
 {% set objects = cond.getObjects() %}
 {% set nObjects = objects | length %}
@@ -10,11 +8,7 @@
 {% set nEtaBits = etaScale.getNbits() %}
 {% set prefix = objects[0] | getPrefix  %}
 
-
-bool
-{{ cond.getName() }}
-(L1Analysis::L1AnalysisL1UpgradeDataFormat* data)
-{
+{% block ConditionLogic scoped %}
   // collect candidates of same BX offset
   size_t nobj = 0;
   std::vector<int> candidates;
@@ -29,8 +23,6 @@ bool
 {{ macros.checkObjectIndex(objects[0], 'nobj') }}
     candidates.emplace_back(ii);
   }
-
-  bool pass = false;
 
   // sufficient candidates found?
   if (candidates.size() < {{nObjects}}) return pass;
@@ -56,7 +48,4 @@ bool
     if (pass) break;
   }
 
-  return pass;
-}
-{% endblock ObjectTemplate %}
-{# eof #}
+{% endblock ConditionLogic %}

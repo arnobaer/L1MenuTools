@@ -1,7 +1,4 @@
-{#
- # @author: Takashi MATSUSHITA
- #}
-{% block CaloMuonCorrelationTemplate scoped %}
+{% extends "Condition.cc" %}
 
 {% import 'macros.jinja2' as macros %}
 
@@ -27,15 +24,10 @@
 
 {% set iPiMuon = (0.5*(phiScaleMuon.getMaximum() - phiScaleMuon.getMinimum())/phiScaleMuon.getStep()) | int -%}
 
-
-bool
-{{ cond.getName() }}
-(L1Analysis::L1AnalysisL1UpgradeDataFormat* data)
-{
+{% block ConditionLogic %}
   {% if overlap_removal %}
     {{ macros.getReference(reference, tmEventSetup, nEtaBits) }}
   {% endif %}
-  bool pass = false;
   size_t nobj0 = 0;
   for (size_t ii = 0; ii < data->{{prefixCalo}}Bx.size(); ii++)
   {
@@ -65,8 +57,4 @@ bool
     }
     if (pass) break;
   }
-
-  return pass;
-}
-{% endblock CaloMuonCorrelationTemplate %}
-{# eof #}
+{% endblock ConditionLogic %}

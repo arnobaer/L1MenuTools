@@ -1,7 +1,5 @@
-{#
- # @author: Takashi MATSUSHITA
- #}
-{% block EsumTemplate scoped %}
+{% extends "Condition.cc" %}
+
 {% import 'macros.jinja2' as macros %}
 {% set object = cond.getObjects()[0] %}
 
@@ -31,12 +29,7 @@
 {% endif -%}
 
 
-bool
-{{ cond.getName() }}
-(L1Analysis::L1AnalysisL1UpgradeDataFormat* data)
-{
-  bool pass = false;
-
+{% block ConditionLogic %}
   for (size_t ii = 0; ii < data->{{prefix}}Bx.size(); ii++)
   {
     if (not (data->{{prefix}}Type.at(ii) == {{ type }})) continue;
@@ -46,8 +39,4 @@ bool
     pass = true;
     break;
   }
-
-  return pass;
-}
-{% endblock EsumTemplate %}
-{# eof #}
+{% endblock ConditionLogic %}

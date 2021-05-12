@@ -1,7 +1,4 @@
-{#
- # @author: Takashi MATSUSHITA
- #}
-{% block CaloCaloCorrelationTemplate scoped %}
+{% extends "Condition.cc" %}
 
 {% import 'macros.jinja2' as macros %}
 
@@ -26,12 +23,8 @@
 
 {% set iPi = (0.5*(phiScale0.getMaximum() - phiScale0.getMinimum())/phiScale0.getStep()) | int -%}
 
-
+{% block ConditionLogic %}
 {% if ((objects[0].getType() == objects[1].getType()) and (objects[0].getBxOffset() == objects[1].getBxOffset())) %}
-bool
-{{ cond.getName() }}
-(L1Analysis::L1AnalysisL1UpgradeDataFormat* data)
-{
   {% if overlap_removal %}
     {{ macros.getReference(reference, tmEventSetup, nEtaBits) }}
   {% endif %}
@@ -52,7 +45,6 @@ bool
     candidates.emplace_back(ii);
   }
 
-  bool pass = false;
   if (candidates.size() < {{nObjects}}) return pass;
 
   const auto& combination = CombinationFactory::get(candidates.size(), {{nObjects}});
@@ -73,19 +65,10 @@ bool
 
     if (pass) break;
   }
-
-  return pass;
-}
-
 {% else %}
-bool
-{{ cond.getName() }}
-(L1Analysis::L1AnalysisL1UpgradeDataFormat* data)
-{
 {% if overlap_removal %}
     {{ macros.getReference(reference, tmEventSetup, nEtaBits) }}
 {% endif %}
-  bool pass = false;
   size_t nobj0 = 0;
   for (size_t ii = 0; ii < data->{{prefix0}}Bx.size(); ii++)
   {
@@ -121,10 +104,5 @@ bool
     }
     if (pass) break;
   }
-
-  return pass;
-}
 {% endif %}
-
-{% endblock CaloCaloCorrelationTemplate %}
-{# eof #}
+{% endblock ConditionLogic %}
