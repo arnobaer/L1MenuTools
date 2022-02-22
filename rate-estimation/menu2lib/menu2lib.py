@@ -37,6 +37,14 @@ PREFIX = {
   tmEventSetup.MBT1HFM: 'sum',
   tmEventSetup.MBT1HFP: 'sum',
   tmEventSetup.TOWERCOUNT: 'sum',
+  tmEventSetup.CENT0: 'cent',
+  tmEventSetup.CENT1: 'cent',
+  tmEventSetup.CENT2: 'cent',
+  tmEventSetup.CENT3: 'cent',
+  tmEventSetup.CENT4: 'cent',
+  tmEventSetup.CENT5: 'cent',
+  tmEventSetup.CENT6: 'cent',
+  tmEventSetup.CENT7: 'cent',
   tmEventSetup.MUS0: 'muonShower',
   tmEventSetup.MUS1: 'muonShower',
   tmEventSetup.MUSOOT0: 'muonShower',
@@ -383,6 +391,22 @@ def getLookUpTable(scaleMap, obj1, obj2):
   return rc
 
 
+def getSignalValue(signalType):
+    """Return mapped signal type to whatever is needed to cut on signal in
+    L1Analysis vector. This function is just a template.
+    """
+    return {
+        tmEventSetup.Centrality0: 0x01,
+        tmEventSetup.Centrality1: 0x02,
+        tmEventSetup.Centrality2: 0x04,
+        tmEventSetup.Centrality3: 0x08,
+        tmEventSetup.Centrality4: 0x10,
+        tmEventSetup.Centrality5: 0x20,
+        tmEventSetup.Centrality6: 0x40,
+        tmEventSetup.Centrality7: 0x80,
+    }[signalType]
+
+
 def toMass(value):
   return math.sqrt(2.*value)
 
@@ -423,6 +447,7 @@ def render(menu, template):
   j2_env.filters['getIndexCut'] = getIndexCut
   j2_env.filters['getScale'] = getScale
   j2_env.filters['getLookUpTable'] = getLookUpTable
+  j2_env.filters['getSignalValue'] = getSignalValue
   data = {
     "tmGrammar": tmGrammar,
     "tmEventSetup": tmEventSetup,

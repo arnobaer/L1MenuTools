@@ -5,7 +5,7 @@
 {% import 'macros.jinja2' as macros %}
 {% set object = cond.getObjects()[0] %}
 {% set prefix = object | getPrefix  %}
-{% set analysis_type = object | getAnalysisType  %}
+{% set signal_value = cond.getType() | getSignalValue  %}
 
 bool
 {{ cond.getName() }}
@@ -16,7 +16,7 @@ bool
   if (data->{{ prefix }}Bx.at(0) == {{ object.getBxOffset() }})
   {
     {# Is signal set? #}
-    if (data->{{ prefix }}Type.at(0) == L1Analysis::{{ analysis_type }})
+    if (data->{{ prefix }}Type.at(0) == {{ signal_value }})
     {
       pass = true;
     }
